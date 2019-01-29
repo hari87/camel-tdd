@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.2.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>nl.devoteam</groupId>
+	<artifactId>openapi</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>openapi</name>
+	<description>Demo project for Spring Boot</description>
+	<properties>
+		<java.version>1.8</java.version>
+		<docker.image.prefix>navigator123</docker.image.prefix>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring-boot-starter</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--cxf dependencies -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http-jetty</artifactId>
+			<version>3.2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-codegen-maven-plugin</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cxf</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-netty4-http</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>1.5.21</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.cxf</groupId>-->
+			<!--<artifactId>cxf-bundle-jaxrs</artifactId>-->
+			<!--<version>2.7.18</version>-->
+			<!--<optional>true</optional>-->
+		<!--</dependency>-->
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-restdsl-swagger-plugin</artifactId>
+				<version>2.23.1</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<specificationUri>${project.basedir}/src/main/swagger/swagger-api.json</specificationUri>
+							<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+
+							<packageName>nl.devoteam.api</packageName>
+						</configuration>
+
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.9</version>
+				<configuration>
+					<repository>${docker.image.prefix}/testrepo</repository>
+					<username>navigator123</username>
+					<password>amsterdam</password>
+					<force>true</force>
+				</configuration>
+			</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+	<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>2.3.1</version>
+		<executions>
+			<execution>
+				<phase>generate-sources</phase>
+				<goals>
+					<goal>generate</goal>
+				</goals>
+				<configuration>
+					<inputSpec>${project.basedir}/src/main/swagger/swagger-api.json</inputSpec>
+					<language>spring</language>
+					<configOptions>
+						<sourceFolder>swagger</sourceFolder>
+						<dateLibrary>java8</dateLibrary>
+						<sourceFolder>src/main/java</sourceFolder>
+					</configOptions>
+					<output>${project.basedir}</output>
+					<apiPackage>nl.devoteam.models</apiPackage>
+					<generateApis>false</generateApis>
+					<generateModels>true</generateModels>
+					<generateModelDocumentation>false</generateModelDocumentation>
+					<generateSupportingFiles>false</generateSupportingFiles>
+					<modelPackage>nl.devoteam.models</modelPackage>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+
+			<!--			<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generateModelTests>false</generateModelTests>
+							<generateApiTests>false</generateApiTests>
+
+
+							<inputSpec>src/main/resources/YAML/restAPI.yaml</inputSpec>
+
+							<language>jaxrs-cxf</language>
+
+							<apiPackage>nl.devoteam.openapi</apiPackage>
+							<modelPackage>nl.devoteam.openapi</modelPackage>
+							<configOptions>
+								<sourceFolder>src/main/java</sourceFolder>
+							</configOptions>
+							<output>${project.basedir}</output>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-bundle-jaxrs</artifactId>
+						<version>2.7.18</version>
+						<optional>true</optional>
+					</dependency>
+				</dependencies>
+			</plugin>-->
+		</plugins>
+	</build>
+
+</project>
