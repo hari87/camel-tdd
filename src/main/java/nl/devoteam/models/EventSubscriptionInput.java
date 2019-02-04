@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * EventSubscriptionInput
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-01-29T15:39:04.855+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-01-29T16:57:26.245+01:00")
 
 public class EventSubscriptionInput   {
   @JsonProperty("callback")

@@ -13,8 +13,8 @@ public class P_TestAsyncSend implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-        CompletableFuture<Object> myobject = template.asyncSendBody("direct:retrieveTroubleTicket", "hello");
-
+        CompletableFuture<Object> myobject = template.asyncSendBody("direct:retrieveTroubleTicket", "");
+        //myobject.thenApplyAsync(n -> );
 
     }
 }

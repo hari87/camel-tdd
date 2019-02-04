@@ -18,7 +18,7 @@ public final class TroubleTicket extends RouteBuilder {
 
         restConfiguration().component("netty4-http")
         .port(8083)
-        ;
+        .host("localhost");
 
         rest("/tmf-api/troubleTicket/v2/")
             .get("/troubleTicket")
